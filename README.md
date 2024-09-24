@@ -6,7 +6,7 @@ This repo consists of the nextflow pipeline for telomere hunter tool.
 ```
 mamba create -n telomere_test python=2.7  r=3.3
 pip install telomerehunter
-mamba install bioconda::samtools=1.3
+mamba install bioconda::samtools
 mamba install bioconda::nextflow
 
 #-- env file not working --#
