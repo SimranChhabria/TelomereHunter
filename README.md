@@ -9,8 +9,8 @@ mamba env create -n telomere_test -f env.yaml
 ## HOW TO RUN THE PIPELINE:
 - INPUTS:
 Script name: run_telomere_pipeline
-    - input_reads   =</path/of/the/directory/containing/bam/files>
-    - output_dir    =</path/of/the/directory/to/store/results>
+    - input_bam   =</path/of/the/directory/containing/bam/files>
+    - out_dir     =</path/of/the/directory/to/store/results>
 
 - PARAMETERS:
 Script name: nextflow.config

@@ -10,8 +10,8 @@ source ~/.bashrc
 mamba activate telomere_test
 
 # Set the input and output directory paths
-input_bam="/data/morrisq/simranch/ALT/TelomereHunter/test_bams/*{T,N}*bam"
-out_dir="/data/morrisq/simranch/ALT/TelomereHunter/test_bams/nextflow_test"
+input_bam="/data/morrisq/simranch/TelomereHunter/test_bams/*{T,N}*bam"
+out_dir="/data/morrisq/simranch/TelomereHunter/test_bams/nextflow_test"
 
 mkdir -p $out_dir
 

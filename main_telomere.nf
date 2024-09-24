@@ -2,12 +2,10 @@
 
 nextflow.enable.dsl = 2
 
-include { TELOMEREHUNTER } from '../modules/morrislab/main.nf'
+include { TELOMEREHUNTER } from './modules/morrislab/main.nf'
 
 workflow  {
-
-    // input = [ [ id:'test', single_end:false ], // meta map
-    //           file(params.test_data['sarscov2']['illumina']['test_paired_end_bam'], checkIfExists: true) ]
+    
     bams_ch = Channel.fromFilePairs(params.input_bam,
           size: 2,
           flat: false)
