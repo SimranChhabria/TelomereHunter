@@ -4,6 +4,12 @@ This repo consists of the nextflow pipeline for telomere hunter tool.
 ## MAMBA ENVIRONMENT:
 - Create a new mamba environment and installing tools needed for the pipeline
 ```
+mamba create -n telomere_test python=2.7  r=3.3
+pip install telomerehunter
+mamba install bioconda::samtools=1.3
+mamba install bioconda::nextflow
+
+#-- env file not working --#
 mamba env create -n telomere_test -f env.yaml
 ```
 ## HOW TO RUN THE PIPELINE:
