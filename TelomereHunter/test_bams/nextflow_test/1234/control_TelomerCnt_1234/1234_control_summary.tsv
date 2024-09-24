@@ -1,0 +1,2 @@
+PID	sample	total_reads	read_length	repeat_threshold_set	repeat_threshold_used	tel_reads	intratel_reads	gc_bins_for_correction	total_reads_with_tel_gc	tel_content
+1234	control	868	101	6 per 100 bp	6	0	0	48-52	133	0.000000

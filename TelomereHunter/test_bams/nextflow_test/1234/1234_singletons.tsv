@@ -1,0 +1,11 @@
+PID	pattern	singleton_count_tumor	singleton_count_control	singleton_count_log2_ratio	singleton_count_tumor_norm	singleton_count_control_norm	singleton_count_log2_ratio_norm	tel_content_log2_ratio	distance_to_expected_singleton_log2_ratio
+1234	ATAGGG	0	0	NA	0	0	NA	NA	NA
+1234	CATGGG	0	0	NA	0	0	NA	NA	NA
+1234	CTAGGG	0	0	NA	0	0	NA	NA	NA
+1234	GTAGGG	0	0	NA	0	0	NA	NA	NA
+1234	TAAGGG	0	0	NA	0	0	NA	NA	NA
+1234	TCAGGG	0	0	NA	0	0	NA	NA	NA
+1234	TGAGGG	0	0	NA	0	0	NA	NA	NA
+1234	TTCGGG	0	0	NA	0	0	NA	NA	NA
+1234	TTGGGG	0	0	NA	0	0	NA	NA	NA
+1234	TTTGGG	0	0	NA	0	0	NA	NA	NA

@@ -1,0 +1,1 @@
+Pattern	Count	Frequency_in_Percent	Avg_Qual_pos1	Avg_Qual_pos2	Avg_Qual_pos3	Avg_Qual_pos4	Avg_Qual_pos5	Avg_Qual_pos6
