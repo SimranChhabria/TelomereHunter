@@ -26,6 +26,7 @@ workflow  {
 
 
     samplesheet_ch = sample_names(file(params.sample_sheet, checkIfExists: true))
+    samplesheet_ch.view()
 
     project_ch = Channel.value(params.project)
     
@@ -72,8 +73,8 @@ def sample_names(csv_file) {
         Channel.of(csv_file).splitCsv(header: true)
         .map{ row ->
            def PATIENT_ID  = row['PATIENT_ID']
-           def TUMOR_BAM = row['BAM_PATH']
-           def NORMAL_BAM = row['BAM_PATH_TO_NORMALS'] 
+           def TUMOR_BAM = row['TUMOR_BAM']
+           def NORMAL_BAM = row['NORMAL_BAM'] 
            return [PATIENT_ID,TUMOR_BAM,NORMAL_BAM]
         }.map{PATIENT_ID,TUMOR_BAM,NORMAL_BAM ->
           def meta = [

@@ -1,36 +1,46 @@
 #!/bin/bash
 #BSUB -J nextflow_telomerehunter
 #BSUB -W 48:00
-#BSUB -n 1
-#BSUB -C 0
-#BSUB -o nextflow_telomerehunter_%J.stdout
-#BSUB -eo nextflow_telomerehunter_%J.stderr
+#BSUB -n 2
+#BSUB -o logs/Telomere.stdout
+#BSUB -eo logs/Telomere.stderr
+
+#----
+#-- Submit the job using:
+# bsub < run_telomere_pipeline.sh 
+# Requirements:
+# -- Sample_sheet.csv
+# -- Project = "MSK" or "TCGA" 
+# -- out_dir = <path/to/output/directory>
+#----
 
 source ~/.bashrc
-mamba activate telomere_test
+conda activate telomere_test
 
-# Set the input and output directory paths
-#input_bam="/data/morrisq/simranch/Telomerehunter/test_bams/*{T,N}*bam"
 
 #--- MSK ----#
-#input_bam="/data/morrisq/simranch/Telomerehunter/test_bams/1234N.recal.bam"
 #out_dir="/data/morrisq/simranch/Telomerehunter/test_bams/nextflow_test"
 #sample_sheet="/data/morrisq/simranch/Telomerehunter/test_bams/IMPACT_sample_sheet_57.csv"
 
-#--- TCGA ---#
-input_bam=/data/morrisq/simranch/ALT/TCGA_bams/LGG_bams
-out_dir=/data/morrisq/simranch/ALT/TCGA_bams/LGG_bams/Telomere_hunter_3_updated
-sample_sheet="/data/morrisq/simranch/ALT/files/TCGA-data/meta-data/data-LGG-formatted_subset.csv"
-project="TCGA"
+#--- MSK ---#
+out_dir="/work/morrisq/simran/Telomerehunter/nextflow_test"
+sample_sheet="/home/chhabrs1/ALT/sample_sheet_subset.csv"
+project="MSK"
 work_dir="$out_dir/work"
 
 
 mkdir -p $out_dir
 cd ${out_dir}
-nextflow run /data1/morrisq/chhabrs1/TelomereHunter/main_telomere.nf \
-         --input_bam $input_bam \
+nextflow run /home/chhabrs1/TelomereHunter/main_telomere.nf \
          --out_dir $out_dir \
          --sample_sheet $sample_sheet \
          --project $project \
          -work-dir $work_dir \
          -resume
+
+# Check if Nextflow command was successful
+if [ $? -eq 0 ]; then
+    echo "Nextflow pipeline completed successfully."
+else
+    echo "Nextflow pipeline failed."
+fi
