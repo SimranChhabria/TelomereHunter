@@ -3,6 +3,9 @@
 nextflow.enable.dsl = 2
 
 include { TELOMEREHUNTER } from './modules/morrislab/main.nf'
+include { COMBINE_SS }     from './modules/combine_ss.nf'
+include { COMBINE_SUMMARY } from '././modules/combine_ss.nf'
+
 
 workflow  {
     
@@ -20,10 +23,32 @@ workflow  {
     
     // bams_ch.view { "bams_ch: ${it}"}
 
+
+
     samplesheet_ch = sample_names(file(params.sample_sheet, checkIfExists: true))
-    samplesheet_ch.view()
+
+    project_ch = Channel.value(params.project)
     
     TELOMEREHUNTER ( samplesheet_ch )
+
+    //-- Combine all the summary and unnormalised singleton counts files ---//
+    singletons_ch = TELOMEREHUNTER.out.singletons
+    summary_ch = TELOMEREHUNTER.out.summary
+    
+
+
+    singleton_summary_ch = summary_ch
+                          .join(singletons_ch)
+
+                                          
+
+    COMBINE_SS (singleton_summary_ch)
+    COMBINE_SS.out.outputs.view()
+
+     //-- Combine all the csv files ---//
+    final_ch = COMBINE_SS.out.outputs.collect().view()
+    COMBINE_SUMMARY (final_ch)
+    
 }
 
 /*
@@ -43,8 +68,8 @@ def sample_names(csv_file) {
             System.exit(1)
         }
     }
-
-    Channel.of(csv_file).splitCsv(header: true)
+    if (params.project == "MSK") {
+        Channel.of(csv_file).splitCsv(header: true)
         .map{ row ->
            def PATIENT_ID  = row['PATIENT_ID']
            def TUMOR_BAM = row['BAM_PATH']
@@ -54,5 +79,19 @@ def sample_names(csv_file) {
           def meta = [
                      id       : PATIENT_ID]
           return [meta, TUMOR_BAM, NORMAL_BAM]}
+    }
 
+    else if (params.project == "TCGA") {
+         Channel.of(csv_file).splitCsv(header: true)
+        .map{ row ->
+           def PATIENT_ID  = row['PATIENT_ID']
+           def TUMOR_BAM = row['TUMOR_BAM']
+           def NORMAL_BAM = row['NORMAL_BAM'] 
+           return [PATIENT_ID,TUMOR_BAM,NORMAL_BAM]
+        }.map{PATIENT_ID,TUMOR_BAM,NORMAL_BAM ->
+          def meta = [
+                     id       : PATIENT_ID]
+          return [meta, TUMOR_BAM, NORMAL_BAM]}
+
+    }
 }

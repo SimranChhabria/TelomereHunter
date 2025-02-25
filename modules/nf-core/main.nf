@@ -1,19 +1,19 @@
 process TELOMEREHUNTER {
     tag "$meta.id"
-    label 'process_single'
-
-    publishDir "${params.out_dir}/", mode: 'copy'
+    label 'process_high'
 
     conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0':
+        'asntech/telomerehunter:v1.1.0' }"
 
+    
     input:
     tuple val(meta), path(tumor_bam), path(normal_bam)
 
     output:
-    tuple val(meta), path("*")                  , emit: outputs
-    tuple val(meta), path ("results_${meta.id}/*/*_summary.tsv")      , emit : summary
-    tuple val(meta), path ("results_${meta.id}/*/*_singletons.tsv")   , emit : singletons
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${meta.id}_prefix")              , emit : outputs
+    path "versions.yml"                                     , emit : versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,15 +21,13 @@ process TELOMEREHUNTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     if [ -f "${tumor_bam}" ] && [ -f "${normal_bam}" ]; then
-    mkdir -p ./results_${prefix}
 
     telomerehunter \
         -ibt ${tumor_bam} \
         -ibc ${normal_bam} \
-        -o ./results_${prefix} \
+        -o ${prefix}_results \
         -p ${prefix} \
         $args
     else
@@ -42,5 +40,19 @@ process TELOMEREHUNTER {
         telomerehunter: \$(samtools --version |& sed '1!d ; s/samtools //')
     END_VERSIONS
     """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     
+
+    """
+    mkdir ${prefix}
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        telomerehunter: \$(samtools --version |& sed '1!d ; s/samtools //')
+    END_VERSIONS
+    """
+
 }
