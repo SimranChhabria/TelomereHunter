@@ -19,9 +19,9 @@ Script name: run_telomere_pipeline
     - project       = "MSK" or "TCGA"
     - out_dir       =</path/of/the/directory/to/store/results>
 
-Note: pipeline is sensitive for the  sample sheet columns names
-MSK     : PATIENT_ID, BAM_PATH, BAM_PATH_TO_NORMALS
-TCGA    : PATIENT_ID, TUMOR_BAM, NORMAL_BAM
+    Note: pipeline is sensitive for the  sample sheet columns names
+    - MSK     : PATIENT_ID, BAM_PATH, BAM_PATH_TO_NORMALS
+    - TCGA    : PATIENT_ID, TUMOR_BAM, NORMAL_BAM
 
 - PARAMETERS:
 Script name: nextflow.config
